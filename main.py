@@ -40,7 +40,8 @@ window.geometry("800x600")
 window.configure(bg="#2C3E50")  # Dark background for modern look
 
 # Load the new window icon image
-icon_image = tk.PhotoImage(file="icon_image.png")
+
+icon_image = tk.PhotoImage(file="C:/Users/tomwm/OneDrive/Desktop/Coding Projects/1. PYTHON/FishingGameRevamped/top_image.png")
 window.iconphoto(False, icon_image)
 
 # Applying a style theme

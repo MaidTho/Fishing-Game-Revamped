@@ -1,48 +1,63 @@
-
-
----------------------------------------------------
-            1.0. Project Introduction           
----------------------------------------------------
-
-A revamped fishing game built in Python succeeding from a previous project.
+<br>
+<br>
 
 ---------------------------------------------------
-            2.0. Intallation / Prerequisites.       
----------------------------------------------------
-
-            - - - P R E R E Q U I S I T E S - - - 
-
-• Python Installed on device.
-
-            - - - I N S T A L L A T I O N - - -
-
-• Download the code files
-• Open folder in workspace.
-• Press run.
+<h1 align="center">PROJECT INTRODUCTION</h1>
+<p align="center"> This project as the repo states, is a revamped version of the Fishing Game built in Python succeeding from a previous project. </p>
+<br>
+<br>
 
 ---------------------------------------------------
-            3.0. Latest Release Notes.      
----------------------------------------------------
+<h1 align="center">PREREQUISITES</h1>
+• Python installed on device. 
+<br>
+<br>
 
-• Release 1.0.0 - Initial Launch
+---------------------------------------------------
+<h1 align="center">INSTALLATION</h1>
+• Download the code files.    
+• Open folder in workspace.  
+• Press run.  
+<br>
+<br>
+
+---------------------------------------------------
+<h1 align="center">LATEST RELEASE NOTES</h1>
+<p align="center">(https://github.com/MaidTho/Fishing-Game-Revamped/releases/tag/v1.0.0)
 
             - - - F E A T U R E S - - - 
 
     • Fully Operational Graphic User Interface.
     • Base Gameplay loop completed.
-    
 
-![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/main/top_image.png?raw=true)
-
+</p>
+<br>
+<br>
 
 ---------------------------------------------------
-            4.0. Features Included.
----------------------------------------------------
+<h1 align="center">FEATURES INCLUDED</h1>
 
+<p align="center">
 • Operational Graphic User Interface.
 
----------------------------------------------------
-            5.0. Future Features.
----------------------------------------------------
+<!---  ![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/main/top_image.png?raw=true) --->
+</p>
+<br>
+<br>
 
+---------------------------------------------------
+<h1 align="center"> FUTURE FEATURES </h1>
+<p align="center">
 • To be determined...
+</p>
+<br>
+<br>
+
+
+
+
+
+
+
+
+
