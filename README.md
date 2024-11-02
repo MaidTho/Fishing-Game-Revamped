@@ -23,8 +23,7 @@
 
 ---------------------------------------------------
 <h1 align="center">LATEST RELEASE NOTES</h1>
-<p align="center">
-• Release 1.0.0 - Initial Launch
+<p align="center">(https://github.com/MaidTho/Fishing-Game-Revamped/releases/tag/v1.0.0)
 
             - - - F E A T U R E S - - - 
 
