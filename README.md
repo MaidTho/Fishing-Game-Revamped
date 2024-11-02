@@ -1,27 +1,28 @@
+<br>
+<br>
 
+---------------------------------------------------
 <h1 align="center">PROJECT INTRODUCTION</h1>
-            
+<p align="center"> This project as the repo states, is a revamped version of the Fishing Game built in Python succeeding from a previous project. </p>
+<br>
+<br>
 
+---------------------------------------------------
+<h1 align="center">PREREQUISITES</h1>
+• Python installed on device. 
+<br>
+<br>
 
-<p align="center"> A revamped fishing game built in Python succeeding from a previous project. </p>
+---------------------------------------------------
+<h1 align="center">INSTALLATION</h1>
+• Download the code files.    
+• Open folder in workspace.  
+• Press run.  
+<br>
+<br>
 
-<h1 align="center">- - - P R E R E Q U I S I T E S - - - </h1>
-
-<p align="center"> • Python Installed on device. </p>
-
-<h1 align="center"> - - - I N S T A L L A T I O N - - - </h1>
-
-
-
-<p align="center"> • Download the code files.   </p>
-<p aligh="center"> • Open folder in workspace. </p>
-<p aligh="center"> • Press run.                </p>
-
+---------------------------------------------------
 <h1 align="center">LATEST RELEASE NOTES</h1>
-
----------------------------------------------------
-            3.0. Latest Release Notes.      
----------------------------------------------------
 <p align="center">
 • Release 1.0.0 - Initial Launch
 
@@ -29,30 +30,29 @@
 
     • Fully Operational Graphic User Interface.
     • Base Gameplay loop completed.
-<p align="center">   
-            
-![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/main/top_image.png?raw=true) 
 
 </p>
+<br>
+<br>
 
+---------------------------------------------------
 <h1 align="center">FEATURES INCLUDED</h1>
 
----------------------------------------------------
-            4.0. Features Included.
----------------------------------------------------
 <p align="center">
 • Operational Graphic User Interface.
 
-<h1 align="center">FUTURE FEATURES</h1>
+<!---  ![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/main/top_image.png?raw=true) --->
+</p>
+<br>
+<br>
 
 ---------------------------------------------------
-            5.0. Future Features.
----------------------------------------------------
+<h1 align="center"> FUTURE FEATURES </h1>
 <p align="center">
 • To be determined...
-
 </p>
-
+<br>
+<br>
 
 
 
