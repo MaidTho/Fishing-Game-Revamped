@@ -1,3 +1,5 @@
+<p align="center">
+
 
 
 ---------------------------------------------------
@@ -46,3 +48,5 @@ A revamped fishing game built in Python succeeding from a previous project.
 ---------------------------------------------------
 
 • To be determined...
+
+</p>
