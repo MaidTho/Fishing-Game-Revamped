@@ -2,9 +2,15 @@
 
 
 <p align="center">
+
+            <h1 align="center">            
 ---------------------------------------------------
             1.0. Project Introduction           
 ---------------------------------------------------
+            </h1>
+
+            
+
 
 A revamped fishing game built in Python succeeding from a previous project.
 
