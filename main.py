@@ -224,7 +224,7 @@ def buy_item(item, quantity_str):
 def open_inventory():
     inventory_window = tk.Toplevel(window)
     inventory_window.title("Inventory")
-    inventory_window.geometry("800x600")
+    inventory_window.geometry("400x250")
     inventory_window.configure(bg="#34495E")
 
     inventory_label = ttk.Label(inventory_window, text="Your Inventory", font=("Helvetica", 12, "bold"))

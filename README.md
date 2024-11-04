@@ -29,6 +29,7 @@
 
     • Fully Operational Graphic User Interface.
     • Base Gameplay loop completed.
+    
 
 </p>
 <br>
