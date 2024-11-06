@@ -69,8 +69,11 @@ Register successful
 <h1 align="center">FEATURES INCLUDED</h1>
 
 <p align="center">
-• Operational Graphic User Interface.
 
+    • NEW!!! FUNCTIONAL LOGIN / REGISTER GUI
+    • NEW!!! GUI 
+    • NEW!!! FUNCTIONAL LEADERBOARD
+    • NEW!!! SHOP GUI
 
 </p>
 <br>
@@ -79,7 +82,10 @@ Register successful
 ---------------------------------------------------
 <h1 align="center"> FUTURE FEATURES </h1>
 <p align="center">
-• To be determined...
+    
+    • Life / Hazard System.
+    • Key Items.
+
 </p>
 <br>
 <br>
