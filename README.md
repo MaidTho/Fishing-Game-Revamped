@@ -23,12 +23,13 @@
 
 ---------------------------------------------------
 <h1 align="center">LATEST RELEASE NOTES</h1>
-<p align="center">(https://github.com/MaidTho/Fishing-Game-Revamped/releases/tag/v1.0.0)
+<p align="center">(https://github.com/MaidTho/Fishing-Game-Revamped/releases/tag/v2.0.0)
 
             - - - F E A T U R E S - - - 
 
-    • Fully Operational Graphic User Interface.
-    • Base Gameplay loop completed.
+    • NEW!!! Functional Leader board!!!
+    • NEW!!! Functional Login / Registration System!
+    • NEW!!! Updated Shop!
     
 
 </p>
@@ -39,9 +40,30 @@
 <h1 align="center">FEATURES INCLUDED</h1>
 
 <p align="center">
-• Operational Graphic User Interface.
 
-<!---  ![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/main/top_image.png?raw=true) --->
+    • NEW!!! Functional Login / Registration System!
+
+        LOGIN
+
+![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/assets/SS10.png?raw=true) 
+        
+        REGISTRATION        
+
+![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/assets/SS5.png?raw=true) 
+![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/assets/SS6.png?raw=true) 
+
+    • NEW!!! Updated GUI !!!
+
+![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/assets/SS7.png?raw=true) 
+
+    • NEW!!! Functional Leader board!!!
+
+![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/assets/SS8.png?raw=true) 
+
+    • NEW!!! Updated Shop!
+
+![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/assets/SS9.png?raw=true) 
+
 </p>
 <br>
 <br>
