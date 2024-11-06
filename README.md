@@ -27,13 +27,39 @@
 
 ---------------------------------------------------
 <h1 align="center">LATEST RELEASE NOTES</h1>
-<p align="center">(https://github.com/MaidTho/Fishing-Game-Revamped/releases/tag/v1.0.0)
+<p align="center">(https://github.com/MaidTho/Fishing-Game-Revamped/releases/tag/v2.0.0)
 
             - - - F E A T U R E S - - - 
-
-    • Fully Operational Graphic User Interface.
-    • Base Gameplay loop completed.
     
+    • NEW!!! FUNCTIONAL LOGIN / REGISTER GUI
+
+LOGIN 
+
+![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/screenshots/SS5.png?raw=true) 
+
+Login successful
+
+![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/screenshots/SS10.png?raw=true) 
+
+REGISTER
+
+![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/screenshots/SS5.png?raw=true) 
+
+Register successful
+
+![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/screenshots/SS6.png?raw=true) 
+    
+    • NEW!!! GUI 
+
+![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/screenshots/SS7.png?raw=true) 
+
+    • NEW!!! FUNCTIONAL LEADERBOARD
+
+![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/screenshots/SS8.png?raw=true) 
+
+    • NEW!!! SHOP GUI
+    
+![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/screenshots/SS9.png?raw=true)     
 
 </p>
 <br>
@@ -45,7 +71,7 @@
 <p align="center">
 • Operational Graphic User Interface.
 
-<!---  ![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/main/top_image.png?raw=true) --->
+
 </p>
 <br>
 <br>
