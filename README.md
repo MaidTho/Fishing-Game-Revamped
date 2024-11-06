@@ -35,31 +35,32 @@
 
 LOGIN 
 
-![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/screenshots/SS5.png?raw=true) 
+![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/main/screenshots/SS5.png?raw=true) 
+
 
 Login successful
 
-![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/screenshots/SS10.png?raw=true) 
+![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/main/screenshots/SS10.png?raw=true) 
 
 REGISTER
 
-![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/screenshots/SS5.png?raw=true) 
+![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/main/screenshots/SS5.png?raw=true) 
 
 Register successful
 
-![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/screenshots/SS6.png?raw=true) 
+![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob//main/screenshots/SS6.png?raw=true) 
     
     • NEW!!! GUI 
 
-![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/screenshots/SS7.png?raw=true) 
+![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/main/screenshots/SS7.png?raw=true) 
 
     • NEW!!! FUNCTIONAL LEADERBOARD
 
-![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/screenshots/SS8.png?raw=true) 
+![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/main/screenshots/SS8.png?raw=true) 
 
     • NEW!!! SHOP GUI
     
-![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/screenshots/SS9.png?raw=true)     
+![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/main/screenshots/SS9.png?raw=true)     
 
 </p>
 <br>
