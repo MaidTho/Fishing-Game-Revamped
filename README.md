@@ -42,12 +42,12 @@ OPTION 3 (Soon to be released)
 
 ---------------------------------------------------
 <h1 align="center">LATEST RELEASE NOTES</h1>
-<p align="center">(https://github.com/MaidTho/Fishing-Game-Revamped/releases/tag/v3.0.0)
+<p align="center">(https://github.com/MaidTho/Fishing-Game-Revamped/releases/tag/v1.0.0)
 
             - - - F E A T U R E S - - - 
 
-    • Updated GUI's.
-    • Updated Life / Hazard system.
+    • Fully Operational Graphic User Interface.
+    • Base Gameplay loop completed.
     
 
 </p>
@@ -58,12 +58,7 @@ OPTION 3 (Soon to be released)
 <h1 align="center">FEATURES INCLUDED</h1>
 
 <p align="center">
-
-    • Operational Graphic User Interface.
-    • Operational Login / Registration feature.
-    • Shop to sell fish and buy supplies!
-    • Leaderboard to see your highest scores.
-
+• Operational Graphic User Interface.
 
 <!---  ![alt text](https://github.com/MaidTho/Fishing-Game-Revamped/blob/main/top_image.png?raw=true) --->
 </p>
@@ -73,13 +68,7 @@ OPTION 3 (Soon to be released)
 ---------------------------------------------------
 <h1 align="center"> FUTURE FEATURES </h1>
 <p align="center">
-
-    • Key Items.
-    • More Hazards.
-    • More Fish.
-    • Legendary Creatures?
-
-
+• To be determined...
 </p>
 <br>
 <br>
