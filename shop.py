@@ -1,141 +1,135 @@
 import tkinter as tk
 from tkinter import ttk
 
-def open_shop(window, currency, inventory, update_inventory_display, currency_label, result_label, fish_types):
+# Globals to be set from main.py
+window = None
+currency = {}
+inventory = {}
+update_inventory_display = None
+currency_label = None
+result_label = None
+fish_types = {}
+lives_label = None
+lives = []
+
+def open_shop():
+    global window, currency, inventory, update_inventory_display, currency_label, result_label, fish_types, lives_label, lives
+
     shop_window = tk.Toplevel(window)
     shop_window.title("Fish Shop")
-    shop_window.geometry("600x600")
-    shop_window.configure(bg="#2C3E50")
+    shop_window.geometry("900x600")
+    shop_window.configure(bg="#58a788")
 
     icon_image = tk.PhotoImage(file="assets\icon_image.png")
     shop_window.iconphoto(False, icon_image)
 
     # Set position to be near the main window
-    x_offset = window.winfo_x() + 750
-    y_offset = window.winfo_y() + 0
+    x_offset = window.winfo_x() + 600
+    y_offset = window.winfo_y()
     shop_window.geometry(f"+{x_offset}+{y_offset}")
 
-    # Shop header
     shop_label = ttk.Label(shop_window, text="Buy items or sell fish", font=("Helvetica", 14, "bold"), background="#2C3E50", foreground="white")
     shop_label.pack(pady=10)
 
-    # Container frame for buying items
+    # Buy section
     buy_frame = tk.Frame(shop_window, bg="#34495E")
     buy_frame.pack(pady=10, padx=10, fill="x")
 
-    def buy_item(item, quantity_str, currency, inventory, update_inventory_display, currency_label, result_label):
-        # Assuming 'price' is available in the scope, you may need to define it based on the item
-        price = 0
-        if item == "Live Bait":
-            price = 2
-        elif item == "Life":
-            price = 5
-
+    def buy_item(item, quantity_str):
+        price = 2 if item == "Live Bait" else 5
         try:
-            if quantity_str == "max":
-                quantity = (currency["Gold"] // price) if price > 0 else 0  # Max quantity based on currency
-            else:
-                quantity = int(quantity_str)
-
-            if quantity > 0:
-                total_cost = quantity * price
-                if currency["Gold"] >= total_cost:
-                    currency["Gold"] -= total_cost
-                    inventory[item] = inventory.get(item, 0) + quantity
-                    currency_label.config(text=f"Gold: {currency['Gold']}")
-                    result_label.config(text=f"Bought {quantity} {item}(s) for {total_cost} gold!", foreground="#4CAF50")
-                    update_inventory_display()
+            quantity = int(quantity_str) if quantity_str.isdigit() else (currency["Gold"] // price)
+            if quantity > 0 and currency["Gold"] >= quantity * price:
+                currency["Gold"] -= quantity * price
+                if item == "Life":
+                    lives[0] += quantity
+                    lives_label.config(text=f"Lives: {lives[0]}")
+                    result_label.config(text=f"You bought {quantity} extra life(s)!", foreground="#4CAF50")
                 else:
-                    result_label.config(text="Not enough gold!", foreground="#F44336")
+                    inventory[item] = inventory.get(item, 0) + quantity
+                    update_inventory_display()
+                    result_label.config(text=f"You bought {quantity} {item}(s)!", foreground="#4CAF50")
+                currency_label.config(text=f"Gold: {currency['Gold']}")
             else:
-                result_label.config(text="Invalid quantity!", foreground="#F44336")
+                result_label.config(text="Not enough gold or invalid quantity!", foreground="#F44336")
         except ValueError:
-            result_label.config(text="Invalid quantity entered.", foreground="#F44336")
+            result_label.config(text="Invalid quantity!", foreground="#F44336")
 
-    # Function to add buy item row
-    def add_buy_row(item, price):
-        item_label = ttk.Label(buy_frame, text=f"Enter {item} to buy:", background="#34495E", foreground="white")
-        item_label.grid(row=row_count[0], column=0, padx=5, pady=5, sticky="e")
+    # Buy items buttons
+    row_count = 0
+    for item, price in [("Live Bait", 2), ("Life", 5)]:
+        ttk.Label(buy_frame, text=f"Buy {item} ({price} gold each):", 
+        background="#34495E", foreground="white").grid(row=row_count, column=0, sticky='w')
+        ttk.Button(buy_frame, text="Buy 1",     command=lambda i=item: buy_item(i, "1")).grid(row=row_count, column=1)
+        ttk.Button(buy_frame, text="Buy 10",    command=lambda i=item: buy_item(i, "10")).grid(row=row_count, column=2)
+        ttk.Button(buy_frame, text="Buy 100",   command=lambda i=item: buy_item(i, "100")).grid(row=row_count, column=3)
+        ttk.Button(buy_frame, text="Buy Max",   command=lambda i=item: buy_item(i, "max")).grid(row=row_count, column=4)
+        row_count += 1
 
-        entry = ttk.Entry(buy_frame, width=5)
-        entry.grid(row=row_count[0], column=1, padx=5, pady=5)
-
-        buy_button = ttk.Button(buy_frame, text=f"Buy ({price} gold each)", 
-                                command=lambda: buy_item(item, entry.get(), currency, inventory, update_inventory_display, currency_label, result_label))
-        buy_button.grid(row=row_count[0], column=2, padx=5, pady=5)
-
-        buy_max_button = ttk.Button(buy_frame, text="Buy Max", 
-                                    command=lambda: buy_item(item, "max", currency, inventory, update_inventory_display, currency_label, result_label))
-        buy_max_button.grid(row=row_count[0], column=3, padx=5, pady=5)
-        
-        row_count[0] += 1
-
-    # Add buy item rows
-    row_count = [0]  # To keep track of row
-    add_buy_row("Live Bait", 2)
-    add_buy_row("Life", 5)
-
-    # Fish selling section
+    # Sell section
     sell_frame = tk.Frame(shop_window, bg="#34495E")
     sell_frame.pack(pady=10, padx=10, fill="x")
 
-    for fish, data in fish_types.items():
-        fish_label = ttk.Label(sell_frame, text=f"Enter quantity of {fish} to sell:", background="#34495E", foreground="white")
-        fish_label.grid(row=row_count[0], column=0, padx=5, pady=5, sticky="e")
+    def sell_fish(fish, quantity_str):
+        if fish not in inventory:
+            result_label.config(text=f"No {fish} in inventory!", foreground="#F44336")
+            return
 
-        sell_entry = ttk.Entry(sell_frame, width=5)
-        sell_entry.grid(row=row_count[0], column=1, padx=5, pady=5)
+        try:
+            quantity = int(quantity_str) if quantity_str.isdigit() else inventory[fish]
+            if quantity > 0 and inventory[fish] >= quantity:
+                points = fish_types[fish]['points']
+                inventory[fish] -= quantity
+                currency["Gold"] += quantity * points
+                result_label.config(text=f"Sold {quantity} {fish} for {quantity * points} gold!", foreground="#4CAF50")
+                update_inventory_display()
+                currency_label.config(text=f"Gold: {currency['Gold']}")
+            else:
+                result_label.config(text=f"Not enough {fish} to sell!", foreground="#F44336")
+        except ValueError:
+            result_label.config(text="Invalid quantity!", foreground="#F44336")
 
-        sell_button = ttk.Button(sell_frame, text=f"Sell {fish} ({data['points']} gold each)",
-                                 command=lambda f=fish, p=data['points'], e=sell_entry: sell_fish(f, p, e.get(), currency, inventory, currency_label, result_label, update_inventory_display))
-        sell_button.grid(row=row_count[0], column=2, padx=5, pady=5)
+    def sell_all_fish():
+        total_earnings = 0
+        for fish, data in fish_types.items():
+            if fish in inventory and inventory[fish] > 0:
+                total_earnings += inventory[fish] * data['points']
+                inventory[fish] = 0
 
-        row_count[0] += 1
-
-    # Sell all fish button
-    sell_all_button = ttk.Button(
-        shop_window, 
-        text="Sell All Fish", 
-        command=lambda: sell_all_fish(currency, inventory, currency_label, result_label, update_inventory_display, fish_types)
-    )
-    sell_all_button.pack(pady=10)
-
-    # Additional padding and visual adjustments
-    buy_frame.grid_columnconfigure(0, weight=1)
-    sell_frame.grid_columnconfigure(0, weight=1)
-
-def sell_fish(fish, price, quantity_str, currency, inventory, currency_label, result_label, update_inventory_display):
-    try:
-        quantity = int(quantity_str)
-        if inventory.get(fish, 0) >= quantity > 0:
-            inventory[fish] -= quantity
-            currency["Gold"] += price * quantity  # Corrected to access "Gold"
-            currency_label.config(text=f"Gold: {currency['Gold']}")
-            result_label.config(text=f"Sold {quantity} {fish}(s) for {price * quantity} gold!", foreground="#4CAF50")
+        if total_earnings > 0:
+            currency["Gold"] += total_earnings
+            result_label.config(text=f"Sold all fish for {total_earnings} gold!", foreground="#4CAF50")
             update_inventory_display()
+            currency_label.config(text=f"Gold: {currency['Gold']}")
         else:
-            result_label.config(text=f"Not enough {fish} to sell!", foreground="#F44336")
-    except ValueError:
-        result_label.config(text="Invalid quantity entered for selling.", foreground="#F44336")
+            result_label.config(text="No fish to sell!", foreground="#F44336")
+
+    # Add labels and buttons for each fish type with proper column layout
+    row_count = 0
+    for fish, data in fish_types.items():
+        ttk.Label(sell_frame, text=f"Sell {fish} ({data['points']} gold each):", 
+        background="#34495E", foreground="white").grid(row=row_count, column=0, sticky='w')
+
+        # Buttons to sell different quantities of fish
+        ttk.Button(sell_frame, text="Sell 1",   command=lambda f=fish: sell_fish(f, "1")).grid(row=row_count, column=1)
+        ttk.Button(sell_frame, text="Sell 10",  command=lambda f=fish: sell_fish(f, "10")).grid(row=row_count, column=2)
+        ttk.Button(sell_frame, text="Sell 100", command=lambda f=fish: sell_fish(f, "100")).grid(row=row_count, column=3)
+        ttk.Button(sell_frame, text="Sell Max", command=lambda f=fish: sell_fish(f, "max")).grid(row=row_count, column=4)
+        
+        row_count += 1
+
+    # Button to sell all fish at once
+    ttk.Button(shop_window, text="Sell All Fish", command=sell_all_fish).pack(pady=10)
 
 
-def sell_all_fish(currency, inventory, currency_label, result_label, update_inventory_display, fish_types):
-    total_currency = 0
-    # Loop through the inventory and calculate the total currency from selling fish
-    for fish, count in inventory.items():
-        if fish in fish_types:
-            # Assuming a fish can be sold for its points value * quantity
-            total_currency += fish_types[fish]["points"] * count
-
-            # Set the fish count to 0 after selling them
-            inventory[fish] = 0
-
-    # Add the total currency to the player's gold
-    currency["Gold"] += total_currency  # Corrected to access "Gold"
-    
-    # Update the result label to show how much gold was earned
-    result_label.config(text=f"Sold all fish for {total_currency} gold.", foreground="#4CAF50")
-    
-    # Update the inventory and currency displays
-    update_inventory_display()
-    currency_label.config(text=f"Gold: {currency['Gold']}")
+def set_globals(win, cur, inv, update_display, cur_label, res_label, fish_types_dict, lives_lbl, lives_list):
+    global window, currency, inventory, update_inventory_display, currency_label, result_label, fish_types, lives_label, lives
+    window = win
+    currency = cur
+    inventory = inv
+    update_inventory_display = update_display
+    currency_label = cur_label
+    result_label = res_label
+    fish_types = fish_types_dict
+    lives_label = lives_lbl
+    lives = lives_list

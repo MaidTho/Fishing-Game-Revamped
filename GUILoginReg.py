@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
+from tkinter import PhotoImage
+from tkinter import ttk
 from auth import Auth
 import subprocess
 import sys
@@ -9,40 +11,109 @@ class FishingGameApp:
     def __init__(self, master):
         self.master = master
         self.master.title("Fishing Game Login/Register")
-        self.master.geometry("400x300")
-        self.auth = Auth()
-
+        self.master.geometry("500x450")
+        self.auth = Auth()       
+        self.master.configure(bg="#2C3E50") # Set up a background color and frame
+        
+        self.icon_image = PhotoImage(file="assets/icon_image.png")
+        self.master.iconphoto(False, self.icon_image)  # Use iconphoto() for PNG support
+        
+        self.frame = ttk.Frame(self.master, padding=20)
+        self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+        
         # Welcome Label
-        self.welcome_label = tk.Label(self.master, text="Welcome to the Fishing Game!\nPlease log in or register below:", font=("Arial", 12))
+        self.welcome_label = tk.Label(
+            self.frame, 
+            text="Welcome to the Fishing Game!\nPlease log in or register:", 
+            font=("Helvetica", 16, "bold"),
+            fg="#000000", 
+            #bg="#2C3E50"  
+            # Font color black, background color matches window
+        )
         self.welcome_label.pack(pady=(10, 20))
 
-        # Create a frame for the input fields
-        self.frame = tk.Frame(self.master)
-        self.frame.pack(padx=10, pady=10)
+        # Username Label
+        self.username_label = tk.Label(
+            self.frame, 
+            text="Username", 
+            font=("Arial", 12), 
+            fg="#000000",
+        #   bg="#FFFFFF"
+        )
+        self.username_label.pack(anchor=tk.CENTER, pady=(10, 5))
+        
+        # Username Entry
+        self.username_entry = ttk.Entry(
+            self.frame, 
+            text="Username", 
+            font=("Arial", 12), 
+            width=30
+        )
+        self.username_entry.pack(pady=5)
 
-        # Username Label and Entry
-        self.username_label = tk.Label(self.frame, text="Username:")
-        self.username_label.grid(row=0, column=0, pady=5)
-        self.username_entry = tk.Entry(self.frame)
-        self.username_entry.grid(row=0, column=1, pady=5)
+        # Password Label
+        self.password_label = tk.Label(
+            self.frame, 
+            text="Password", 
+            font=("Arial", 12), 
+            fg="#000000", 
+        #    bg="#FFFFFF"
+        )
+        self.password_label.pack(anchor=tk.CENTER, pady=(20, 5))
+        
+        # Password Entry
+        self.password_entry = ttk.Entry(
+            self.frame, 
+            show="*", 
+            text="Password", 
+            font=("Arial", 12), 
+            width=30)
+        self.password_entry.pack(pady=5)
 
-        # Password Label and Entry
-        self.password_label = tk.Label(self.frame, text="Password:")
-        self.password_label.grid(row=1, column=0, pady=5)
-        self.password_entry = tk.Entry(self.frame, show="*")
-        self.password_entry.grid(row=1, column=1, pady=5)
+        # Buttons Frame
+        self.button_frame = tk.Frame(
+            self.frame, 
+            #bg="#2C3E50"
+            )
+        self.button_frame.pack(pady=30)
 
         # Login Button
-        self.login_button = tk.Button(self.frame, text="Login", command=self.login)
-        self.login_button.grid(row=2, column=0, pady=5)
+        self.login_button = tk.Button(
+            self.button_frame, 
+            text="Login", 
+            command=self.login, 
+            font=("Arial", 12, "bold"),
+            bg="#27AE60", 
+            fg="white",
+            activebackground="#2ECC71", 
+            activeforeground="white",
+            relief=tk.FLAT, width=12, height=1
+        )
+        self.login_button.grid(row=0, column=0, padx=10)
 
         # Register Button
-        self.register_button = tk.Button(self.frame, text="Register", command=self.register)
-        self.register_button.grid(row=2, column=1, pady=5)
+        self.register_button = tk.Button(
+            self.button_frame, 
+            text="Register",
+            command=self.register,
+            font=("Arial", 12, "bold"),
+            bg="#3498DB", fg="white",
+            activebackground="#5DADE2", 
+            activeforeground="white",
+            relief=tk.FLAT, width=12, height=1
+        )
+        self.register_button.grid(row=0, column=1, padx=10)
 
-        # Test Label
-        self.ty_label = tk.Label(self.master, text="Thank you so much for playing my game!!!", font=("Arial", 12))
-        self.ty_label.pack(pady=(10, 20))
+        # Thank You Label
+        self.ty_label = tk.Label(
+            self.frame, 
+            text="Thank you for playing!", 
+            font=("Arial", 12), 
+
+          #  bg="#2C3E50"
+            fg="#000000",           
+        )
+        self.ty_label.pack(pady=(20, 10))
 
     def login(self):
         username = self.username_entry.get()
