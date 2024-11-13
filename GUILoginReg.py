@@ -4,8 +4,8 @@ from tkinter import PhotoImage
 from tkinter import ttk
 from auth import Auth
 import subprocess
-import sys
 import os
+import sys
 
 class FishingGameApp:
     def __init__(self, master):

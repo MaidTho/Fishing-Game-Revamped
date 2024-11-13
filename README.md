@@ -5,7 +5,7 @@
 <h1 align="center">PROJECT INTRODUCTION</h1>
 <p align="center"> This project as the repo states, is a revamped version of the Fishing Game built in Python succeeding from a previous project. </p>
 <br>
-<br>
+<br> 
 
 ---------------------------------------------------
 <h1 align="center">PREREQUISITES</h1>

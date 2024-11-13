@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+import os
 
 # Globals to be set from main.py
 window = None
@@ -17,14 +18,14 @@ def open_shop():
 
     shop_window = tk.Toplevel(window)
     shop_window.title("Fish Shop")
-    shop_window.geometry("900x600")
+    shop_window.geometry("775x600")
     shop_window.configure(bg="#58a788")
 
     icon_image = tk.PhotoImage(file="assets\icon_image.png")
     shop_window.iconphoto(False, icon_image)
 
     # Set position to be near the main window
-    x_offset = window.winfo_x() + 600
+    x_offset = window.winfo_x() + 700
     y_offset = window.winfo_y()
     shop_window.geometry(f"+{x_offset}+{y_offset}")
 
@@ -34,6 +35,13 @@ def open_shop():
     # Buy section
     buy_frame = tk.Frame(shop_window, bg="#34495E")
     buy_frame.pack(pady=10, padx=10, fill="x")
+
+    # Configure grid columns for symmetry
+    buy_frame.grid_columnconfigure(0, weight=1)
+#    buy_frame.grid_columnconfigure(1, weight=1)
+#    buy_frame.grid_columnconfigure(2, weight=1)
+#    buy_frame.grid_columnconfigure(3, weight=1)
+#    buy_frame.grid_columnconfigure(4, weight=1)
 
     def buy_item(item, quantity_str):
         price = 2 if item == "Live Bait" else 5
@@ -58,17 +66,24 @@ def open_shop():
     # Buy items buttons
     row_count = 0
     for item, price in [("Live Bait", 2), ("Life", 5)]:
-        ttk.Label(buy_frame, text=f"Buy {item} ({price} gold each):", 
-        background="#34495E", foreground="white").grid(row=row_count, column=0, sticky='w')
-        ttk.Button(buy_frame, text="Buy 1",     command=lambda i=item: buy_item(i, "1")).grid(row=row_count, column=1)
-        ttk.Button(buy_frame, text="Buy 10",    command=lambda i=item: buy_item(i, "10")).grid(row=row_count, column=2)
-        ttk.Button(buy_frame, text="Buy 100",   command=lambda i=item: buy_item(i, "100")).grid(row=row_count, column=3)
-        ttk.Button(buy_frame, text="Buy Max",   command=lambda i=item: buy_item(i, "max")).grid(row=row_count, column=4)
+        ttk.Label(buy_frame, text=f"Buy {item} ({price} gold each):", background="#34495E", foreground="white").grid(row=row_count, column=0, sticky='w', padx=5, pady=5)
+        
+        ttk.Button(buy_frame, text="Buy 1",     command=lambda i=item: buy_item(i, "1")).grid(row=row_count, column=1, padx=5, pady=5)
+        ttk.Button(buy_frame, text="Buy 10",    command=lambda i=item: buy_item(i, "10")).grid(row=row_count, column=2, padx=5, pady=5)
+        ttk.Button(buy_frame, text="Buy 100",   command=lambda i=item: buy_item(i, "100")).grid(row=row_count, column=3, padx=5, pady=5)
+        ttk.Button(buy_frame, text="Buy Max",   command=lambda i=item: buy_item(i, "max")).grid(row=row_count, column=4, padx=5, pady=5)
         row_count += 1
 
     # Sell section
     sell_frame = tk.Frame(shop_window, bg="#34495E")
     sell_frame.pack(pady=10, padx=10, fill="x")
+
+    # Configure grid columns for symmetry
+    sell_frame.grid_columnconfigure(0, weight=1)
+#    sell_frame.grid_columnconfigure(1, weight=1)
+#    sell_frame.grid_columnconfigure(2, weight=1)
+#    sell_frame.grid_columnconfigure(3, weight=1)
+#    sell_frame.grid_columnconfigure(4, weight=1)
 
     def sell_fish(fish, quantity_str):
         if fish not in inventory:
@@ -107,14 +122,13 @@ def open_shop():
     # Add labels and buttons for each fish type with proper column layout
     row_count = 0
     for fish, data in fish_types.items():
-        ttk.Label(sell_frame, text=f"Sell {fish} ({data['points']} gold each):", 
-        background="#34495E", foreground="white").grid(row=row_count, column=0, sticky='w')
+        ttk.Label(sell_frame, text=f"Sell {fish} ({data['points']} gold each):", background="#34495E", foreground="white").grid(row=row_count, column=0, sticky='w', padx=5, pady=5)
 
         # Buttons to sell different quantities of fish
-        ttk.Button(sell_frame, text="Sell 1",   command=lambda f=fish: sell_fish(f, "1")).grid(row=row_count, column=1)
-        ttk.Button(sell_frame, text="Sell 10",  command=lambda f=fish: sell_fish(f, "10")).grid(row=row_count, column=2)
-        ttk.Button(sell_frame, text="Sell 100", command=lambda f=fish: sell_fish(f, "100")).grid(row=row_count, column=3)
-        ttk.Button(sell_frame, text="Sell Max", command=lambda f=fish: sell_fish(f, "max")).grid(row=row_count, column=4)
+        ttk.Button(sell_frame, text="Sell 1",   command=lambda f=fish: sell_fish(f, "1")).grid(row=row_count, column=1, padx=5, pady=5)
+        ttk.Button(sell_frame, text="Sell 10",  command=lambda f=fish: sell_fish(f, "10")).grid(row=row_count, column=2, padx=5, pady=5)
+        ttk.Button(sell_frame, text="Sell 100", command=lambda f=fish: sell_fish(f, "100")).grid(row=row_count, column=3, padx=5, pady=5)
+        ttk.Button(sell_frame, text="Sell Max", command=lambda f=fish: sell_fish(f, "max")).grid(row=row_count, column=4, padx=5, pady=5)
         
         row_count += 1
 

@@ -1,5 +1,5 @@
 import os
-import bcrypt
+import bcrypt 
 
 class Auth:
     def __init__(self, user_file='users.txt'):
