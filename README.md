@@ -10,7 +10,7 @@
 ---------------------------------------------------
 <h1 align="center">PREREQUISITES</h1>
 
-    • Python installed on device. 
+    • None Needed.
 
 <br>
 <br>
@@ -18,22 +18,11 @@
 ---------------------------------------------------
 <h1 align="center">INSTALLATION</h1>
 
-OPTION 1
+OPTION 1!
 
-    • Download the code files. 
-    • Open folder in workspace.
-    • Open GUILoginReg.py  
-    • Press Run
-
-OPTION 2
-
-    • Copy Codespace into workspace.
-    • Open GUILoginReg.py
-    • Press Run.
-
-OPTION 3 (Soon to be released)
-
+    • Go to output folder.
     • Download source code .Zip file.
+    • Extract Folder.
     • Launch .exe file "Fishing Game".
     • Enjoy!
 
@@ -47,9 +36,9 @@ OPTION 3 (Soon to be released)
             - - - N E W F E A T U R E S - - - 
 
     • NEW!!! Updated GUI.
-    • NEW!!! Login & Registration form.
-    • NEW!!! Shop to buy / sell fish and items.
+    • NEW!!! Shop GUI Updated.
     • NEW!!! Life / Hazard system.
+    • NEW!!! Playable Demo.
     
 
 </p>
@@ -60,13 +49,15 @@ OPTION 3 (Soon to be released)
 <h1 align="center">FEATURES INCLUDED</h1>
 
 <p align="center">
-    
+
+
+    • Cast Line once or however many times you wish!
+    • Updated Graphical User Interface!
     • Login & Registration.
-    • Fully Operational Graphic User Interface.
     • Leaderboard!
     • Shop to buy / sell fish and items.
-    • Base Gameplay loop completed.
     • Life / Hazard system.
+
 
 </p>
 <br>
@@ -76,7 +67,6 @@ OPTION 3 (Soon to be released)
 <h1 align="center"> FUTURE FEATURES </h1>
 <p align="center">
     
-    • Key Items.
     • More Fish!
     • More Hazards!!
     • Mythical Creatures?

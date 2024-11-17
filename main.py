@@ -5,146 +5,72 @@ import random
 import os
 import sys
 
+def get_asset_path(filename):
+    """Get the absolute path to an asset file."""
+    if getattr(sys, 'frozen', False):  # Check if running as an executable
+        base_dir = sys._MEIPASS
+    else:
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+
+    return os.path.normpath(os.path.join(base_dir, 'assets', filename))
+
 #   Initialize the main window
-window = tk.Tk()
-window.title("Fishing Game")
-window.geometry("650x800")  #   Width x Height
-window.configure(bg="#4f4eb1")
-
-#   Load the new window icon image
-icon_image = tk.PhotoImage(file="assets\icon_image.png")
-window.iconphoto(False, icon_image)
-
-
-# Use os.path.join to handle paths correctly across systems
-icon_path = os.path.join('assets', 'icon_image.png')
-
-# Load the image using the corrected path
-icon_image = tk.PhotoImage(file=icon_path)
-
-if getattr(sys, 'frozen', False):  # If running as an executable
-    BASE_DIR = sys._MEIPASS
-else:
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-icon_path = os.path.join(BASE_DIR, 'assets', 'icon_image.png')
-
-# Load the icon image
-icon_image = tk.PhotoImage(file=icon_path)
-
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - # 
-#              LEADERBOARD SECTION                  #
-# - - - - - - - - - - - - - - - - - - - - - - - - - # 
 
 #   Fetch the username passed from the login script
 username = sys.argv[1] if len(sys.argv) > 1 else "Player"
 
-#   Display a welcome message with the username
-welcome_label = ttk.Label( 
-    window, 
-    text=f"Welcome, {username}! Let's start fishing!", 
-    font=("Helvetica", 14, "bold"))
-welcome_label.pack(pady=(30, 30))
+open_windows = []
 
-#   File to store leaderboard data
-LEADERBOARD_FILE = "leaderboard.txt"
+#window.title        ("Fishing Game - {username}'s session")
+def update_title(username):
+    window.title(f"Fishing Game - {username}'s session")
 
-#   Save a player's score to the leaderboard file
-def save_score(player_name, score):
-    with open(LEADERBOARD_FILE, "a") as file:
-        file.write(f"{player_name},{score}\n")
+# Function to set the window position with optional offsets
+def set_window_position(window, width=800, height=650, x_offset=None, y_offset=None):
+    screen_width = window.winfo_screenwidth()
+    screen_height = window.winfo_screenheight()
 
-#   Load and display the leaderboard
-def display_leaderboard():
-    leaderboard_window = tk.Toplevel(window)
-    open_windows.append(leaderboard_window)
-    leaderboard_window.title("Leaderboard")
-    leaderboard_window.geometry("500x600") #   Width x Height
-    leaderboard_window.configure(bg="#34495E")
+    # Center the window if no offsets are provided
+    if x_offset is None:
+        x_offset = (screen_width - width) // 2
+    if y_offset is None:
+        y_offset = (screen_height - height) // 2
 
-    # Load the new window icon image
-    icon_image = tk.PhotoImage(file="assets/icon_image.png")
-    leaderboard_window.iconphoto(False, icon_image)
+    # Set window size and position
+    window.geometry(f"{width}x{height}+{x_offset}+{y_offset}")
 
-    # Set position to be near the main window
-    x_offset = window.winfo_x() + 700
-    y_offset = window.winfo_y() + 0
-    leaderboard_window.geometry(f"+{x_offset}+{y_offset}")
+# Initialize the main window
+window = tk.Tk()
 
-    # Leaderboard title label
-    title_label = ttk.Label(
-        leaderboard_window, 
-        text="🏆 Leaderboard 🏆", 
-        font=("Helvetica", 18, "bold"), 
-        background="#34495E", 
-        foreground="gold"
-    )
-    title_label.pack(pady=20)
+# Customize the window position by changing x_offset and y_offset here
+custom_x_offset = 100   # Change this value to your desired X position
+custom_y_offset = 200   # Change this value to your desired Y position
 
-    # Style for the Treeview widget
-    style = ttk.Style()
-    style.configure("Treeview", background="#2C3E50", foreground="white", rowheight=30, fieldbackground="#2C3E50")
-    style.configure("Treeview.Heading", font=("Helvetica", 12, "bold"), background="#1ABC9C", foreground="black")
-    style.map("Treeview", background=[("selected", "#3498DB")])
+# Set window size and position
+set_window_position(window, 650, 650, custom_x_offset, custom_y_offset)
 
-    # Treeview widget for displaying scores
-    leaderboard_tree = ttk.Treeview(
-        leaderboard_window, 
-        columns=("Rank", "Player", "Score"), 
-        show="headings", 
-        height=10
-    )
-    leaderboard_tree.pack(padx=20, pady=10)
+# window.geometry     ("800x650")  #   Width x Height
+window.configure    (bg="#2da7d2") 
 
-    # Define column headings
-    leaderboard_tree.heading("Rank", text="Rank")
-    leaderboard_tree.heading("Player", text="Player")
-    leaderboard_tree.heading("Score", text="Score")
+# username = "Player1"  # Replace this with your actual username retrieval logic
+update_title(username)
 
-    # Set column widths
-    leaderboard_tree.column("Rank", width=50, anchor="center")
-    leaderboard_tree.column("Player", width=200, anchor="center")
-    leaderboard_tree.column("Score", width=100, anchor="center")
+# Load an icon image with error handling
+try:
+    icon_path = get_asset_path('icon_image.png')
+    icon_image = tk.PhotoImage(file=icon_path)
+except tk.TclError:
+    icon_image = None
+except Exception as e:
+    print(f"Unexpected error: {e}")
 
-    # Read scores from the file and sort them
-    scores = []
-    if os.path.exists(LEADERBOARD_FILE):
-        with open(LEADERBOARD_FILE, "r") as file:
-            for line in file:
-                name, score = line.strip().split(",")
-                scores.append((name, int(score)))
-        scores.sort(key=lambda x: x[1], reverse=True)
+# Ensure the icon image is not garbage collected
+if icon_image:
+    window.iconphoto(False, icon_image)
 
-    # Insert scores into the Treeview
-    for rank, (name, score) in enumerate(scores[:10], 1):  # Show top 10 scores
-        leaderboard_tree.insert("", "end", values=(rank, name, score))
-
-    # Button to close the leaderboard window
-    close_button = ttk.Button(
-        leaderboard_window, 
-        text="Close", 
-        command=leaderboard_window.destroy,
-        style="Custom.TButton"
-    )
-    close_button.pack(pady=20)
-
-#   Example use: Call save_score at the end of the game
-def end_game():
-    save_score(username, score)  # Save current game score
-    display_leaderboard()        # Show leaderboard
-
-#   Save score on exit
-def on_exit():
-    save_score(username, score)  # Save the current score with the username
-    window.destroy()
-
-window.protocol("WM_DELETE_WINDOW", on_exit)
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - # 
-#                VARIABLES SECTION                  #
-# - - - - - - - - - - - - - - - - - - - - - - - - - # 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+#                                                           VARIABLES CONFIGURATION                                                               #
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 
 #   Fish types and their probabilities of being caught and points
 fish_types = {
@@ -182,18 +108,12 @@ score       = 0                     # Starting score
 currency    = {"Gold": 500}         # Starting cash
 inventory   = {"Live Bait": 10}     # Starting bait
 lives       = [3]                   # Starting life
-open_windows = []
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - # 
-#                GAME LOGIC SECTION                 #
-# - - - - - - - - - - - - - - - - - - - - - - - - - #
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+#                                                            GAME LOGIC                                                                           #
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 
-def game_over():
-    save_score(username, score)
-    messagebox.showinfo("Game Over", f"Game over {username}! Final score: {score} ... Returing to Login.")
-    reset_game_state()  # Reset all game variables
-    window.destroy()
-    os.system("python GUILoginReg.py")
+# - Cast Line           - DONE
 
 def trigger_treasure():
     """Randomly catch a treasure with a 10% chance."""
@@ -214,20 +134,31 @@ def prompt_keep_or_sell(treasure_type, treasure_info):
     treasure_window = tk.Toplevel(window)
     treasure_window.title("Treasure Caught!")
     treasure_window.geometry("400x200") #   Width x Height
-    treasure_window.configure(bg="#34495E")
+    treasure_window.configure(background="#34495E")
+
+    if icon_image:
+        treasure_window.iconphoto(False, icon_image)
     
+    style = ttk.Style(window)
+    style.theme_use("clam")
+    style.configure("Keep.TButton", background="#ba1eb8", foreground="gold", font=("Aptos", 12, "bold"), relief="raised", padding=10)
+    style.map("Keep.TButton", background=[("active", "#E94545"), ("pressed", "#B03030")], foreground=[("disabled", "#D3D3D3")])
+
+    style.configure("Sell.TButton", background="#1f946f", foreground="gold", font=("Aptos", 12, "bold"), relief="raised", padding=10)
+    style.map("Sell.TButton", background=[("active", "#E94545"), ("pressed", "#B03030")], foreground=[("disabled", "#D3D3D3")])
+
     # Set position to be near the main window
-    x_offset = window.winfo_x() + 600
-    y_offset = window.winfo_y()
+    x_offset = window.winfo_x() + 800
+    y_offset = window.winfo_y() + 0
     treasure_window.geometry(f"+{x_offset}+{y_offset}")
 
     # Load the new window icon image
-    icon_image = tk.PhotoImage(file="assets/icon_image.png")
-    treasure_window.iconphoto(False, icon_image)
+    #icon_image = tk.PhotoImage(file="assets/icon_image.png")
+    #treasure_window.iconphoto(False, icon_image)
 
     message = f"You caught a {treasure_type}! {treasure_info['description']}\nValue: {treasure_info['value']} Gold"
-    message_label = ttk.Label(treasure_window, text=message, background="#34495E", foreground="white")
-    message_label.pack(pady=10)    
+    message_label = ttk.Label(treasure_window, text=message, font=("Aptos", 12, "bold"), background="#34495E", foreground="white", padding=(10, 10, 10, 10))
+    message_label.pack(pady=10, padx=10)    
     
     # Button to keep the treasure
     def keep_treasure():
@@ -243,10 +174,10 @@ def prompt_keep_or_sell(treasure_type, treasure_info):
         currency_label.config(text=f"Gold: {currency['Gold']}")
         treasure_window.destroy()
 
-    keep_button = ttk.Button(treasure_window, text="Keep", command=keep_treasure)
+    keep_button = ttk.Button(treasure_window, text="Keep", style="Keep.TButton", command=keep_treasure)
     keep_button.pack(side=tk.LEFT, padx=20, pady=20)
 
-    sell_button = ttk.Button(treasure_window, text="Sell", command=sell_treasure)
+    sell_button = ttk.Button(treasure_window, text="Sell", style="Sell.TButton", command=sell_treasure)
     sell_button.pack(side=tk.RIGHT, padx=20, pady=20)
 
 def trigger_hazard(hazard_type=None):
@@ -371,10 +302,219 @@ def cast_lines():
     currency_label.config(text=f"Gold: {currency.get('Gold', 0)}")
     lives_label.config(text=f"Lives: {lives[0]}")
 
-def reset_game_state():
-    global score, currency, inventory, lives, open_windows
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+#                                                            SHOP LOGIC                                                                           #
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 
-    # Reset game variables to their initial state
+def open_shop():
+    #window = tk.TopLevel()
+    #window.title("Fish Shop")
+    #window.geometry("800x500")
+    #window.configure(bg="#58a788")
+
+    shop_window = tk.Toplevel(window)
+    open_windows.append(shop_window)
+    shop_window.title("Fish Shop")
+    shop_window.geometry("800x500") #   Width x Height
+    shop_window.configure(bg="#58a788")
+
+    #if icon_image:
+    #    leaderboard_window.iconphoto(False, icon_image)
+
+    if icon_image:
+        shop_window.iconphoto(False, icon_image)
+
+    # Set position to be near the main window
+    x_offset = shop_window.winfo_x() + 600
+    y_offset = shop_window.winfo_y() + 250
+    shop_window.geometry(f"+{x_offset}+{y_offset}")
+
+    style = ttk.Style(shop_window)
+    style.theme_use("clam")
+    style.configure("Sell.TButton", background="#49b655", foreground="gold", font=("Aptos", 12, "bold"), relief="raised", padding=10)
+    style.map("Sell.TButton", background=[("active", "#38dd65"), ("pressed", "#B03030")], foreground=[("disabled", "#D3D3D3")])
+
+    style.configure("Buy.TButton", background="#5946b9", foreground="white", font=("Aptos", 12, "bold"), relief="raised", padding=10)
+    style.map("Buy.TButton", background=[("active", "#5216e9"), ("pressed", "#B03030")], foreground=[("disabled", "#D3D3D3")])
+
+    shop_label = ttk.Label(shop_window, text="Buy items or sell fish", font=("Aptos", 14, "bold"), background="#2C3E50", foreground="white", anchor="center")
+    shop_label.pack(pady=10, padx=10, fill="x")
+
+    # Buy section
+    buy_frame = tk.Frame(shop_window, bg="#34495E")
+    buy_frame.pack(pady=10, padx=10, fill="x")
+
+    # Configure grid columns for symmetry
+    buy_frame.grid_columnconfigure(0, weight=1)
+
+    def buy_item(item, quantity_str):
+        price = 2 if item == "Live Bait" else 5
+        try:
+            quantity = int(quantity_str) if quantity_str.isdigit() else (currency["Gold"] // price)
+            if quantity > 0 and currency["Gold"] >= quantity * price:
+                currency["Gold"] -= quantity * price
+                if item == "Life":
+                    lives[0] += quantity
+                    lives_label.config(text=f"Lives: {lives[0]}")
+                    result_label.config(text=f"You bought {quantity} extra life(s)!", foreground="#4CAF50")
+                else:
+                    inventory[item] = inventory.get(item, 0) + quantity
+                    update_inventory_display()
+                    result_label.config(text=f"You bought {quantity} {item}(s)!", foreground="#4CAF50")
+                currency_label.config(text=f"Gold: {currency['Gold']}")
+            else:
+                result_label.config(text="Not enough gold or invalid quantity!", foreground="#F44336")
+        except ValueError:
+            result_label.config(text="Invalid quantity!", foreground="#F44336")
+
+    # Buy items buttons
+    row_count = 0
+    for item, price in [("Live Bait", 2), ("Life", 5)]:
+        ttk.Label(buy_frame, text=f"Buy {item} ({price} gold each):", background="#34495E", foreground="white").grid(row=row_count, column=0, sticky='w', padx=10, pady=10)
+        
+        ttk.Button(buy_frame, text="Buy 1",     command=lambda i=item: buy_item(i, "1"), style="Buy.TButton").grid(row=row_count, column=1, padx=10, pady=10)
+        ttk.Button(buy_frame, text="Buy 10",    command=lambda i=item: buy_item(i, "10"), style="Buy.TButton").grid(row=row_count, column=2, padx=10, pady=10)
+        ttk.Button(buy_frame, text="Buy 100",   command=lambda i=item: buy_item(i, "100"), style="Buy.TButton").grid(row=row_count, column=3, padx=10, pady=10)
+        ttk.Button(buy_frame, text="Buy Max",   command=lambda i=item: buy_item(i, "max"), style="Buy.TButton").grid(row=row_count, column=4, padx=10, pady=10)
+        row_count += 1
+
+    # Sell section
+    sell_frame = tk.Frame(shop_window, bg="#34495E")
+    sell_frame.pack(pady=10, padx=10, fill="x")
+
+    # Configure grid columns for symmetry
+    sell_frame.grid_columnconfigure(0, weight=1)
+
+    def sell_fish(fish, quantity_str):
+        if fish not in inventory:
+            result_label.config(text=f"No {fish} in inventory!", foreground="#F44336")
+            return
+
+        try:
+            quantity = int(quantity_str) if quantity_str.isdigit() else inventory[fish]
+            if quantity > 0 and inventory[fish] >= quantity:
+                points = fish_types[fish]['points']
+                inventory[fish] -= quantity
+                currency["Gold"] += quantity * points
+                result_label.config(text=f"Sold {quantity} {fish} for {quantity * points} gold!", foreground="#4CAF50")
+                update_inventory_display()
+                currency_label.config(text=f"Gold: {currency['Gold']}")
+            else:
+                result_label.config(text=f"Not enough {fish} to sell!", foreground="#F44336")
+        except ValueError:
+            result_label.config(text="Invalid quantity!", foreground="#F44336")
+
+    def sell_all_fish():
+        total_earnings = 0
+        for fish, data in fish_types.items():
+            if fish in inventory and inventory[fish] > 0:
+                total_earnings += inventory[fish] * data['points']
+                inventory[fish] = 0
+
+        if total_earnings > 0:
+            currency["Gold"] += total_earnings
+            result_label.config(text=f"Sold all fish for {total_earnings} gold!", foreground="#4CAF50")
+            update_inventory_display()
+            currency_label.config(text=f"Gold: {currency['Gold']}")
+        else:
+            result_label.config(text="No fish to sell!", foreground="#F44336")
+   
+    # Add labels and buttons for each fish type with proper column layout
+    row_count = 0
+    for fish, data in fish_types.items():
+
+        ttk.Label(sell_frame, text=f"Sell {fish} ({data['points']} gold each):", background="#34495E", foreground="white").grid(row=row_count, column=0, sticky='w', padx=10, pady=10)
+
+        # Buttons to sell different quantities of fish
+        ttk.Button(sell_frame, text="Sell 1",   command=lambda f=fish: sell_fish(f, "1"), style="Sell.TButton").grid(row=row_count, column=1, padx=10, pady=10)
+        ttk.Button(sell_frame, text="Sell 10",  command=lambda f=fish: sell_fish(f, "10"), style="Sell.TButton").grid(row=row_count, column=2, padx=10, pady=10)
+        ttk.Button(sell_frame, text="Sell 100", command=lambda f=fish: sell_fish(f, "100"), style="Sell.TButton").grid(row=row_count, column=3, padx=10, pady=10)
+        ttk.Button(sell_frame, text="Sell Max", command=lambda f=fish: sell_fish(f, "max"), style="Sell.TButton").grid(row=row_count, column=4, padx=10, pady=10)    
+        row_count += 1
+
+    # Button to sell all fish at once
+    ttk.Button(shop_window, text="Sell All Fish", command=sell_all_fish, style="Sell.TButton").pack(padx=10, pady=10)
+
+    # close_button = ttk.Button(window, text="Close", command=window.destroy, style="Custom.TButton")
+    # close_button.pack(pady=20)
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+#                                                        LEADERBOARD LOGIC                                                                        #
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+
+#   File to store leaderboard data
+LEADERBOARD_FILE = "leaderboard.txt"
+#   Save a player's score to the leaderboard file
+def save_score(player_name, score):
+    with open(LEADERBOARD_FILE, "a") as file:
+        file.write(f"{player_name},{score}\n")
+
+#   Load and display the leaderboard
+def display_leaderboard():
+
+    leaderboard_window = tk.Toplevel(window)
+    open_windows.append(leaderboard_window)
+    leaderboard_window.title("Leaderboard")
+    leaderboard_window.geometry("500x500") #   Width x Height
+    leaderboard_window.configure(bg="#34495E")
+
+    if icon_image:
+        leaderboard_window.iconphoto(False, icon_image)
+
+    # Load the new window icon image
+    #icon_image = tk.PhotoImage(file="assets/icon_image.png")
+    #leaderboard_window.iconphoto(False, icon_image)
+
+    # Set position to be near the main window
+    x_offset = window.winfo_x() + 100
+    y_offset = window.winfo_y() + 0
+    leaderboard_window.geometry(f"+{x_offset}+{y_offset}")
+
+    # Leaderboard title label
+    title_label = ttk.Label(leaderboard_window, text="🏆 Leaderboard 🏆", font=("Helvetica", 18, "bold"), background="#34495E", foreground="gold")
+    title_label.pack(pady=20)
+
+    # Style for the Treeview widget
+    style = ttk.Style()
+    style.configure("Treeview", background="#2C3E50", foreground="white", rowheight=30, fieldbackground="#2C3E50")
+    style.configure("Treeview.Heading", font=("Helvetica", 12, "bold"), background="#1ABC9C", foreground="black")
+    style.map("Treeview", background=[("selected", "#3498DB")])
+
+    # Treeview widget for displaying scores
+    leaderboard_tree = ttk.Treeview(leaderboard_window, columns=("Rank", "Player", "Score"), show="headings", height=10)
+    leaderboard_tree.pack(padx=20, pady=10)
+
+    # Define column headings
+    leaderboard_tree.heading("Rank", text="Rank")
+    leaderboard_tree.heading("Player", text="Player")
+    leaderboard_tree.heading("Score", text="Score")
+
+    # Set column widths
+    leaderboard_tree.column("Rank", width=50, anchor="center")
+    leaderboard_tree.column("Player", width=200, anchor="center")
+    leaderboard_tree.column("Score", width=100, anchor="center")
+
+    # Read scores from the file and sort them
+    scores = []
+    if os.path.exists(LEADERBOARD_FILE):
+        with open(LEADERBOARD_FILE, "r") as file:
+            for line in file:
+                name, score = line.strip().split(",")
+                scores.append((name, int(score)))
+        scores.sort(key=lambda x: x[1], reverse=True)
+
+    # Insert scores into the Treeview
+    for rank, (name, score) in enumerate(scores[:10], 1):  # Show top 10 scores
+        leaderboard_tree.insert("", "end", values=(rank, name, score))
+
+    # Button to close the leaderboard window
+    close_button = ttk.Button(leaderboard_window, text="Close", command=leaderboard_window.destroy, style="Custom.TButton")
+    close_button.pack(pady=20)
+
+# - Exit Game           - DONE!
+def reset_game_state():
+    global score, currency, inventory, lives, open_windows  
+    
     score = 0
     currency = {"Gold": 500}
     inventory = {"Live Bait": 10}
@@ -392,225 +532,135 @@ def reset_game_state():
     lives_label.config(text=f"Lives: {lives[0]}")
     currency_label.config(text=f"Gold: {currency['Gold']}")
 
-def exit_game():
+
+def game_over():
+    save_score(username, score)
+    messagebox.showinfo("Game Over", f"Game over {username}! Final score: {score} ... Returing to Login.")
+    reset_game_state()  # Reset all game variables
+    window.destroy()
+    os.system("python GUILoginReg.py")
+
+def exit_game(): 
     confirm = tk.messagebox.askyesno("Exit Game", "Are you sure you want to exit to the login screen")
     if confirm:
         save_score(username, score)
-        reset_game_state()  
+        game_over()
+        #reset_game_state() 
+        print("exited game!") 
         window.destroy()
 
-        os.system("python GUILoginReg.py")
-
-window.protocol("WM_DELETE_WINDOW", exit_game)
-# - - - - - - - - - - - - - - - - - - - - - - - - - # 
-#                   SHOP SECTION                    #
-# - - - - - - - - - - - - - - - - - - - - - - - - - # 
-
-from shop import open_shop, set_globals
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - # 
-#                INVENTORY SECTION                  #
-# - - - - - - - - - - - - - - - - - - - - - - - - - # 
-
-def open_inventory():
-    """Open the inventory window with fixed size and scrollbar."""
-    inventory_window = tk.Toplevel(window)
-    inventory_window.title("Inventory")
-    inventory_window.geometry("600x300")
-    inventory_window.configure(bg="#34495E")
-    
-    # Load the new window icon image
-    icon_image = tk.PhotoImage(file="assets/icon_image.png")
-    inventory_window.iconphoto(False, icon_image)
-
-    # Set position to be near the main window
-    x_offset = window.winfo_x() + 50
-    y_offset = window.winfo_y() + 50
-    inventory_window.geometry(f"+{x_offset}+{y_offset}")
-
-    inventory_label = ttk.Label(
-        inventory_window, 
-        text="Your Inventory", 
-        font=("Helvetica", 12, "bold"), 
-        background="#34495E", 
-        foreground="white"
-    )
-    inventory_label.pack(pady=10)
-
-    # Frame to hold the inventory text widget and scrollbar
-    inventory_frame = ttk.Frame(inventory_window)
-    inventory_frame.pack(pady=5)
-
-    # Scrollbar for inventory
-    scrollbar = tk.Scrollbar(inventory_frame)
-    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-
-    # Inventory display with fixed height and width
-    inventory_display = tk.Text(
-        inventory_frame, 
-        height=10, 
-        width=40, 
-        wrap='word', 
-        font=("Helvetica", 10), 
-        yscrollcommand=scrollbar.set
-    )
-    inventory_display.pack()
-    scrollbar.config(command=inventory_display.yview)
-
-    # Insert the inventory items
-    inventory_display.insert(tk.END, "\n".join(f"{fish}: {count}" for fish, count in inventory.items()))
-    inventory_display.config(state='disabled')
+# - INVENTORY SECTION   - DONE!
 
 def update_inventory_display():
     """Update the inventory label on the main window."""
     inventory_text = "Inventory:\n" + "\n".join(f"{fish}: {count}" for fish, count in inventory.items())
     inventory_label.config(text=inventory_text)
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - # 
-#                    GUI SECTION                    #
-# - - - - - - - - - - - - - - - - - - - - - - - - - # 
-
-#   Applying a style theme
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+#                                                        GUI CONFIGURATION                                                                        #
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 style = ttk.Style()
-style.theme_use("alt")
-# VVV Results, Inventory and Stats Frame Stying VVV
-style.configure("Custom.TFrame", background="#2C3E50")  # Update for styling
-#   VVV Shop button Styling VVV
-style.configure(
-    "TButton", 
-    font=("Helvetica", 10), 
-    padding=20, 
-    background="#2C3E50", 
-    foreground="white") 
+style.theme_use("clam")
+style.configure("Custom.TFrame", background="black")
+style.configure("Welcome.TLabel", background="#5a44bb", foreground="white", font=("Aptos (Heading)", 18), anchor="center", width=50) # Welcome Label
+style.configure("Custom1.TFrame", background="black")
+style.configure("Results.TLabel", background="#5a44bb", foreground="white", font=("Aptos", 16),  anchor="center", width=50) # Results Label
+style.configure("Custom2.TFrame", background="#620c97", anchor="center")
+style.configure("Custom3.TFrame", background="#620c97", anchor="center")
+style.configure("Shop.TFrame", background="black")
 
-#   VVV Main GUI Button Styling VVV
-style.configure( 
-    "Custom.TButton",
-    font=("Helvetica", 10, "bold"), 
-    padding=10, 
-    background="#3498db", 
-    foreground="black")
-style.map("Custom.TButton", background=[("active", "#2980b9")])  # Active state color
+# -- -- -- RESULTS FRAME CONFIG -- -- -- #
+welcome_frame = ttk.Frame   (window, style="Custom.TFrame", padding=(   5, # LEFT
+                                                                        10, # TOP
+                                                                        5, # RIGHT
+                                                                        10  # BOTTOM
+                                                                    )
+                            )
+welcome_frame.pack          (pady=25, padx=25, fill="x")
 
-#   Custom Label Stying
-style.configure("TLabel", font=("Helvetica", 10), padding=20, background="#2C3E50", foreground="white")
+welcome_label = ttk.Label   (welcome_frame, text=f"Welcome, {username}! Let's start fishing!", style="Welcome.TLabel")
+welcome_label.pack          (padx=10, pady=10, fill="x") 
 
-#   Instructions Label
-instructions_label = ttk.Label(
-    window, 
-    text="🎣 Cast your line to catch some fish!", 
-   # font=("Helvetica", 14, "bold"),
-    anchor='center',
-    style="TLabel"
-    )
-instructions_label.pack(pady=10, padx=10, fill="x")
+# -- -- -- WELCOME FRAME CONFIG -- -- -- #
+result_frame = ttk.Frame    (window, style="Custom1.TFrame", padding=(5, 10, 5, 10))
+result_frame.pack           (pady=25, padx=25, fill="x")
 
-result_frame = ttk.Frame(
-    window, 
-    style="Custom.TFrame",
-    padding=(10, 10, 10, 10)
-)
-result_frame.pack(pady=10, padx=10, fill="x")
+result_label = ttk.Label    (result_frame, text="Results Go here", style="Results.TLabel")
+result_label.pack           (padx=10, pady=10, fill="x") 
 
-# Set minimum size for the frame (so it doesn't collapse)
-result_frame.grid_rowconfigure(0, minsize=50)   # Minimum height for row 0
-result_frame.grid_columnconfigure(0, minsize=600)  # Minimum width for column 0
+# -- -- -- GAME MENU FRAME CONFIG -- -- -- #
+gamemenu = ttk.Frame(window, style="Custom2.TFrame", padding=(5, 10, 5, 10))
+gamemenu.pack(pady=25, padx=25, fill="x")
 
-#   Toolbar Frame
-toolbar = ttk.Frame(
-    window, 
-    style="Custom.TFrame", 
-    padding=(10, 10, 10, 10)
-    )
-toolbar.pack(pady=10, padx=10, fill="x")
+# Make sure the columns expand equally
+for i in range(4):  # Adjust the range based on the number of columns you have
+    gamemenu.grid_columnconfigure(i, weight=1, uniform="equal")
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-#                           LABEL MAPPING                               #
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-
-# Result message with a fixed width
-result_label = ttk.Label(
-    result_frame, 
-    text="", 
-    font=("Helvetica", 12), 
-    background="#2C3E50", 
-    foreground="white", 
-    anchor="center",
-    width=50
-)
-result_label.pack( padx=5, pady=5,fill="x") 
+# Make sure the row expands equally (for row 1 where labels are placed)
+gamemenu.grid_rowconfigure(1, weight=1)
 
 #   Score Display
-score_label = ttk.Label(
-    toolbar, 
-    text="Score: 0", 
-    font=("Helvetica", 14, "bold")
-    )
-score_label.grid(row=1, column=0,  padx=5, pady=5)
+style.configure("Gamemenu.TLabel", background="#620c97", foreground="white", font=("Aptos (Heading)", 10, "bold"), anchor="center", width=50) # Labels
+score_label = ttk.Label(gamemenu, text="Score: 0", style="Gamemenu.TLabel")
+score_label.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
 
 #   Currency Display
-currency_label = ttk.Label(
-    toolbar, 
-    text=f"Gold: {currency['Gold']}", 
-    font=("Helvetica", 14, "bold")
-    )
-currency_label.grid(row=1, column=1,  padx=5, pady=5)
+currency_label = ttk.Label(gamemenu, text=f"Gold: {currency['Gold']}", style="Gamemenu.TLabel")
+currency_label.grid(row=1, column=1, padx=10, pady=10, sticky="nsew")
 
 #   Lives Display
-lives_label = ttk.Label(
-    toolbar, 
-    text="Lives: 3",
-    font=("Helvetica", 14, "bold")
-    )
-lives_label.grid(row=1, column=2,  padx=5, pady=5)
+lives_label = ttk.Label(gamemenu, text="Lives: 3", style="Gamemenu.TLabel")
+lives_label.grid(row=1, column=2, padx=10, pady=10, sticky="nsew")
 
 #   Inventory Display
-inventory_label = ttk.Label(
-    toolbar,
-    text="Inventory:", 
-    font=("Helvetica", 10, "bold")
-    )
-inventory_label.grid(row=1, column=3, columnspan=3, padx=5, pady=5)
+inventory_label = ttk.Label(gamemenu, text="Inventory:", style="Gamemenu.TLabel")
+inventory_label.grid(row=1, column=3, columnspan=3, padx=10, pady=10, sticky="nsew")
 update_inventory_display()
 
 #   Cast line input Description
-cast_label = ttk.Label(
-    toolbar, 
-    text="Number of casts:",
-    )
-cast_label.grid(row=2, column=0,  padx=5, pady=5)
+cast_label = ttk.Label(gamemenu, text="Enter Cast Amount", style="Gamemenu.TLabel")
+cast_label.grid(row=2, column=0, padx=10, pady=10, sticky="nsew")
 
 #   Cast line input
-font_size = 15  
-cast_entry = ttk.Entry(
-    toolbar, 
-    width=8, 
-    font=("Arial", font_size)
-    )
+cast_entry = ttk.Entry(gamemenu, width=10, font=("Arial", 10))
 cast_entry.grid(row=2, column=1,  padx=5, pady=5)
 cast_entry.insert(0, "1")  # Default value of 1 for casting
 
-set_globals(window, currency, inventory, update_inventory_display, currency_label, result_label, fish_types, lives_label, lives)
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+#                                                           BUTTON CONFIGURATION                                                                  #
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - # 
-#               MENU BUTTON SECTION                 #
-# - - - - - - - - - - - - - - - - - - - - - - - - - # 
+# -- -- -- GAME MENU BUTTONS FRAME CONFIG -- -- -- #
+
+gamemenu2 = ttk.Frame(window, style="Custom3.TFrame", padding=(10, 10, 10, 10))
+gamemenu2.pack(pady=10, padx=10, fill="x")
+
+# Make sure the columns expand equally
+for i in range(4):  # Adjust the range based on the number of columns you have
+    gamemenu2.grid_columnconfigure(i, weight=1, uniform="equal")
+
+# Make sure the row expands equally (for row 1 where labels are placed)
+gamemenu2.grid_rowconfigure(1, weight=1)
+
+#           " Custom TButton Config "               #
+style.configure ("Custom.TButton",font=("Helvetica", 10, "bold"), padding=10, background="#3498db", foreground="black")
+style.map       ("Custom.TButton", background=[("active", "#2980b9")])  # Active state color
 
 #   Cast Button
-cast_button = ttk.Button(toolbar, text=" Cast Line", command=cast_lines, style="Custom.TButton")
+cast_button = ttk.Button(gamemenu2, text=" Cast Line", command=cast_lines, style="Custom.TButton")
 cast_button.grid(row=3, column=0, padx=5, pady=5)
 
 #   Shop Button
-shop_button = ttk.Button(toolbar, text=" Shop", command=open_shop, style="Custom.TButton")
+shop_button = ttk.Button(gamemenu2, text=" Shop", command=open_shop, style="Custom.TButton")
 shop_button.grid(row=3, column=1, padx=5, pady=5)
 
 #   Leaderboard Button 
-leaderboard_button = ttk.Button(toolbar, text="Leaderboard", command=display_leaderboard, style="Custom.TButton")
+leaderboard_button = ttk.Button(gamemenu2, text="Leaderboard", command=display_leaderboard, style="Custom.TButton")
 leaderboard_button.grid(row=3, column=2, padx=5, pady=5)
 
 #   Exit Button
-exit_button = ttk.Button(toolbar, text="Exit Game", command=exit_game, style="Custom.TButton")
+exit_button = ttk.Button(gamemenu2, text="Exit Game", command=exit_game, style="Custom.TButton")
 exit_button.grid(row=3, column=3,  padx=5, pady=5)
 
-#  - - - RUN GAME LOOP - - - #
+# - - - - - END GAME LOOP - - - - - #
 window.mainloop()

@@ -15,8 +15,8 @@ class FishingGameApp:
         self.auth = Auth()       
         self.master.configure(bg="#2C3E50") # Set up a background color and frame
         
-        self.icon_image = PhotoImage(file="assets/icon_image.png")
-        self.master.iconphoto(False, self.icon_image)  # Use iconphoto() for PNG support
+        #self.icon_image = PhotoImage(file="icon_image.png")
+        #self.master.iconphoto(False, self.icon_image)  # Use iconphoto() for PNG support
         
         self.frame = ttk.Frame(self.master, padding=20)
         self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
