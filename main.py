@@ -47,7 +47,7 @@ custom_x_offset = 100   # Change this value to your desired X position
 custom_y_offset = 200   # Change this value to your desired Y position
 
 # Set window size and position
-set_window_position(window, 650, 650, custom_x_offset, custom_y_offset)
+set_window_position(window, 800, 600, custom_x_offset, custom_y_offset)
 
 # window.geometry     ("800x650")  #   Width x Height
 window.configure    (bg="#2da7d2") 
@@ -57,7 +57,7 @@ update_title(username)
 
 # Load an icon image with error handling
 try:
-    icon_path = get_asset_path('icon_image.png')
+    icon_path = get_asset_path('Fishing Game Logo.png')
     icon_image = tk.PhotoImage(file=icon_path)
 except tk.TclError:
     icon_image = None
@@ -140,12 +140,12 @@ def prompt_keep_or_sell(treasure_type, treasure_info):
         treasure_window.iconphoto(False, icon_image)
     
     style = ttk.Style(window)
-    style.theme_use("clam")
-    style.configure("Keep.TButton", background="#ba1eb8", foreground="gold", font=("Aptos", 12, "bold"), relief="raised", padding=10)
-    style.map("Keep.TButton", background=[("active", "#E94545"), ("pressed", "#B03030")], foreground=[("disabled", "#D3D3D3")])
+    style.theme_use("default")
+    style.configure("Keep.TButton", background="#BA1EB8", foreground="gold", font=("Aptos", 12, "bold"), relief="raised", padding=10)
+    style.map("Keep.TButton", background=[("active", "#DD2EDB"), ("pressed", "#AE08A5")], foreground=[("disabled", "#D3D3D3")])
 
-    style.configure("Sell.TButton", background="#1f946f", foreground="gold", font=("Aptos", 12, "bold"), relief="raised", padding=10)
-    style.map("Sell.TButton", background=[("active", "#E94545"), ("pressed", "#B03030")], foreground=[("disabled", "#D3D3D3")])
+    style.configure("Sell.TButton", background="#1F946F", foreground="gold", font=("Aptos", 12, "bold"), relief="raised", padding=10)
+    style.map("Sell.TButton", background=[("active", "#28BE8F"), ("pressed", "#42D7A8")], foreground=[("disabled", "#D3D3D3")])
 
     # Set position to be near the main window
     x_offset = window.winfo_x() + 800
@@ -240,9 +240,14 @@ def cast_lines():
         return
 
     # Check if player is - Gold
-    if currency.get("Gold", 0) < 1:
+    if currency.get("Gold", 0) < 0:
         result_label.config(text="You're in debt! Quick sell some fish", foreground="#F44336")
         return
+
+    # Check if player has 0 Gold
+    if currency.get("Gold", 0) == 0:
+        result_label.config(text="Uh Oh You have 0 gold, better hope a thief doesn't steal...", foreground="#F44336")
+        
 
     for _ in range(num_casts):
         # Trigger hazard before each cast with a 20% chance
@@ -293,7 +298,6 @@ def cast_lines():
             game_over()
             return
 
-
         window.update_idletasks()  # Ensure the UI is updated immediately
 
     # Update the inventory and labels after all casts are completed
@@ -307,19 +311,11 @@ def cast_lines():
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 
 def open_shop():
-    #window = tk.TopLevel()
-    #window.title("Fish Shop")
-    #window.geometry("800x500")
-    #window.configure(bg="#58a788")
-
     shop_window = tk.Toplevel(window)
     open_windows.append(shop_window)
     shop_window.title("Fish Shop")
     shop_window.geometry("800x500") #   Width x Height
     shop_window.configure(bg="#58a788")
-
-    #if icon_image:
-    #    leaderboard_window.iconphoto(False, icon_image)
 
     if icon_image:
         shop_window.iconphoto(False, icon_image)
@@ -330,9 +326,9 @@ def open_shop():
     shop_window.geometry(f"+{x_offset}+{y_offset}")
 
     style = ttk.Style(shop_window)
-    style.theme_use("clam")
-    style.configure("Sell.TButton", background="#49b655", foreground="gold", font=("Aptos", 12, "bold"), relief="raised", padding=10)
-    style.map("Sell.TButton", background=[("active", "#38dd65"), ("pressed", "#B03030")], foreground=[("disabled", "#D3D3D3")])
+    style.theme_use("default")
+    style.configure("Sell.TButton", background="#36952F", foreground="white", font=("Aptos", 12, "bold"), relief="raised", padding=10)
+    style.map("Sell.TButton", background=[("active", "#5CDE4F"), ("pressed", "#44BC3B")], foreground=[("disabled", "#D3D3D3")])
 
     style.configure("Buy.TButton", background="#5946b9", foreground="white", font=("Aptos", 12, "bold"), relief="raised", padding=10)
     style.map("Buy.TButton", background=[("active", "#5216e9"), ("pressed", "#B03030")], foreground=[("disabled", "#D3D3D3")])
@@ -455,15 +451,11 @@ def display_leaderboard():
     leaderboard_window = tk.Toplevel(window)
     open_windows.append(leaderboard_window)
     leaderboard_window.title("Leaderboard")
-    leaderboard_window.geometry("500x500") #   Width x Height
+    leaderboard_window.geometry("500x550") #   Width x Height
     leaderboard_window.configure(bg="#34495E")
 
     if icon_image:
         leaderboard_window.iconphoto(False, icon_image)
-
-    # Load the new window icon image
-    #icon_image = tk.PhotoImage(file="assets/icon_image.png")
-    #leaderboard_window.iconphoto(False, icon_image)
 
     # Set position to be near the main window
     x_offset = window.winfo_x() + 100
@@ -509,7 +501,7 @@ def display_leaderboard():
 
     # Button to close the leaderboard window
     close_button = ttk.Button(leaderboard_window, text="Close", command=leaderboard_window.destroy, style="Custom.TButton")
-    close_button.pack(pady=20)
+    close_button.pack(pady=20, padx=20)
 
 # - Exit Game           - DONE!
 def reset_game_state():
@@ -531,7 +523,6 @@ def reset_game_state():
     score_label.config(text=f"Score: {score}")
     lives_label.config(text=f"Lives: {lives[0]}")
     currency_label.config(text=f"Gold: {currency['Gold']}")
-
 
 def game_over():
     save_score(username, score)
@@ -560,14 +551,14 @@ def update_inventory_display():
 #                                                        GUI CONFIGURATION                                                                        #
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 style = ttk.Style()
-style.theme_use("clam")
-style.configure("Custom.TFrame", background="black")
-style.configure("Welcome.TLabel", background="#5a44bb", foreground="white", font=("Aptos (Heading)", 18), anchor="center", width=50) # Welcome Label
-style.configure("Custom1.TFrame", background="black")
-style.configure("Results.TLabel", background="#5a44bb", foreground="white", font=("Aptos", 16),  anchor="center", width=50) # Results Label
+style.theme_use("default")
+style.configure("Custom.TFrame", background="#000000")
+style.configure("Welcome.TLabel", background="#343434", foreground="white", font=("Aptos (Heading)", 18, "bold"), anchor="center", width=50) # Welcome Label
+style.configure("Custom1.TFrame", background="#000000")
+style.configure("Results.TLabel", background="#343434", foreground="white", font=("Aptos", 14, "bold"),  anchor="center", width=50) # Results Label
 style.configure("Custom2.TFrame", background="#620c97", anchor="center")
 style.configure("Custom3.TFrame", background="#620c97", anchor="center")
-style.configure("Shop.TFrame", background="black")
+style.configure("Shop.TFrame", background="#000000")
 
 # -- -- -- RESULTS FRAME CONFIG -- -- -- #
 welcome_frame = ttk.Frame   (window, style="Custom.TFrame", padding=(   5, # LEFT
@@ -578,14 +569,14 @@ welcome_frame = ttk.Frame   (window, style="Custom.TFrame", padding=(   5, # LEF
                             )
 welcome_frame.pack          (pady=25, padx=25, fill="x")
 
-welcome_label = ttk.Label   (welcome_frame, text=f"Welcome, {username}! Let's start fishing!", style="Welcome.TLabel")
+welcome_label = ttk.Label   (welcome_frame, text=f"Welcome, {username}! You received 500 gold to be a fisherman", style="Welcome.TLabel")
 welcome_label.pack          (padx=10, pady=10, fill="x") 
 
 # -- -- -- WELCOME FRAME CONFIG -- -- -- #
 result_frame = ttk.Frame    (window, style="Custom1.TFrame", padding=(5, 10, 5, 10))
 result_frame.pack           (pady=25, padx=25, fill="x")
 
-result_label = ttk.Label    (result_frame, text="Results Go here", style="Results.TLabel")
+result_label = ttk.Label    (result_frame, text="Be careful not to go -0 in Gold", style="Results.TLabel")
 result_label.pack           (padx=10, pady=10, fill="x") 
 
 # -- -- -- GAME MENU FRAME CONFIG -- -- -- #
@@ -633,7 +624,7 @@ cast_entry.insert(0, "1")  # Default value of 1 for casting
 # -- -- -- GAME MENU BUTTONS FRAME CONFIG -- -- -- #
 
 gamemenu2 = ttk.Frame(window, style="Custom3.TFrame", padding=(10, 10, 10, 10))
-gamemenu2.pack(pady=10, padx=10, fill="x")
+gamemenu2.pack(pady=2, padx=25, fill="x")
 
 # Make sure the columns expand equally
 for i in range(4):  # Adjust the range based on the number of columns you have
