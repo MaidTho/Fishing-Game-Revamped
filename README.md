@@ -35,10 +35,12 @@ OPTION 1!
 
             - - - N E W F E A T U R E S - - - 
 
+    • NEW!!! Version 1.2.0 is LIVE!!!
     • NEW!!! Updated GUI.
-    • NEW!!! Shop GUI Updated.
-    • NEW!!! Life / Hazard system.
-    • NEW!!! Playable Demo.
+    • NEW!!! Updated Catch Rates.
+    • NEW!!! Functional Login / Registration / Leaderboard system.
+    
+    
     
 
 </p>
@@ -53,10 +55,11 @@ OPTION 1!
 
     • Cast Line once or however many times you wish!
     • Updated Graphical User Interface!
-    • Login & Registration.
-    • Leaderboard!
-    • Shop to buy / sell fish and items.
-    • Life / Hazard system.
+    • Login & Registration System!!!
+    • Leaderboard!!!
+    • Shop to buy / sell fish and items!!!
+    • Life / Hazard system!!!
+    • Catch Treasures!!!
 
 
 </p>
